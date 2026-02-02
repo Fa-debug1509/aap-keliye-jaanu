@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For my love 💕</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Georgia,serif;
+  background:linear-gradient(180deg,#f7a1c4,#fcd5ce);
+  height:100vh;
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  color:#4a0e2e;
+  position:relative;
+}
+
+/* Background text */
+body::before{
+  content:"kuchupuchu";
+  position:fixed;
+  inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:12vw;
+  font-weight:bold;
+  color:rgba(255,255,255,0.18);
+  pointer-events:none;
+}
+
+/* Laptop only block */
+#mobileBlock{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:linear-gradient(180deg,#f7a1c4,#fcd5ce);
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  z-index:9999;
+}
+
+.screen{
+  display:none;
+  max-width:400px;
+  padding:22px;
+  background:rgba(255,255,255,0.45);
+  border-radius:26px;
+}
+.screen.active{display:block;}
+
+button{
+  padding:12px 26px;
+  border:none;
+  border-radius:30px;
+  background:#ffb3c6;
+  cursor:pointer;
+  margin:10px;
+  font-size:15px;
+}
+
+.no{
+  position:absolute;
+}
+
+input[type=range]{width:100%;}
+
+/* Hearts */
+.heart{
+  position:absolute;
+  top:-10px;
+  font-size:16px;
+  animation:fall linear infinite;
+  opacity:.6;
+}
+@keyframes fall{
+  to{transform:translateY(110vh);}
+}
+
+/* Maze */
+.maze{
+  display:grid;
+  grid-template-columns:repeat(6,45px);
+  grid-template-rows:repeat(6,45px);
+  gap:5px;
+  justify-content:center;
+  margin:10px auto;
+}
+.cell{
+  width:45px;
+  height:45px;
+  border-radius:10px;
+  background:#ffd6e0;
+}
+.wall{background:#ff8fab;}
+.start{background:#b8f2e6;}
+.end{background:#4caf50;}
+.player{background:#4a0e2e;}
+
+/* Mini popup */
+#miniPopup{
+  display:none;
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  background:white;
+  padding:12px 18px;
+  border-radius:20px;
+  z-index:9999;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Mobile block -->
+<div id="mobileBlock">
+  <div>
+    <h2>Hey my love 💕</h2>
+    <p>Open this on a <b>laptop</b> 💻</p>
+  </div>
+</div>
+
+<!-- SCREENS -->
+
+<div class="screen active" id="s1">
+  <h2>Hi my love, I made something special for you 💕</h2>
+  <button onclick="go(2)">Come closer</button>
+</div>
+
+<div class="screen" id="s2">
+  <p>How much do you like me?</p>
+  <input type="range" min="1" max="10" value="1" id="slider">
+  <p id="sliderText"></p>
+</div>
+
+<div class="screen" id="s3">
+  <p>Tap the heart 💕</p>
+  <button onclick="tap()">❤</button>
+  <p id="tapText"></p>
+</div>
+
+<div class="screen" id="s4">
+  <p>Quick statement 😌</p>
+  <button onclick="go(5)">aap meri malkin</button>
+  <button onclick="nope()">nahi</button>
+</div>
+
+<div class="screen" id="s5">
+  <p><b>Reach the green</b> 🧩</p>
+  <p style="font-size:13px;">Tap adjacent squares</p>
+  <div class="maze" id="maze"></div>
+</div>
+
+<div class="screen" id="s6">
+  <p>You always find your way to me 💗</p>
+  <button onclick="go(7)">Continue</button>
+</div>
+
+<div class="screen" id="s7">
+  <p>Ice cream date? 🍦</p>
+  <button onclick="go(8)">YES 💕</button>
+  <button class="no" id="noBtn">NO 😤</button>
+</div>
+
+<div class="screen" id="s8">
+  <p>You passed 😌</p>
+  <button onclick="finale()">Perfecto 💕</button>
+</div>
+
+<!-- FINAL POPUP -->
+<div id="lovePopup" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.4);
+  justify-content:center;
+  align-items:center;
+  z-index:10000;
+">
+  <div style="background:white;padding:20px;border-radius:20px;">
+    <p>Perfect choice, my love 🥰<br>Ice cream’s on you 🍦💕</p>
+    <button onclick="closePopup()">ji meri jaan 💖</button>
+  </div>
+</div>
+
+<!-- FINAL HEARTFELT SCREEN -->
+<div id="finalScreen" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  background:linear-gradient(180deg,#f7a1c4,#fcd5ce);
+  z-index:10001;
+  padding:30px;
+  overflow-y:auto;
+">
+  <div style="
+    max-width:650px;
+    margin:40px auto;
+    background:rgba(255,255,255,0.55);
+    padding:30px;
+    border-radius:30px;
+  ">
+    <p style="line-height:1.6;font-size:16px;">
+      I just want you to know that loving you is honestly a full-time job.<br><br>
+
+      You’re annoying, dramatic, stubborn… and somehow still the best decision
+      I’ve ever made 🙄💖<br><br>
+
+      You pretend you’re tough, but you’re soft where it matters.
+      And yes, I’ll admit it (only once, don’t get used to it) — you’re smart,
+      handsome, and stupidly charming.<br><br>
+
+      You drive me crazy, you test my patience, and yet somehow you’re also my
+      comfort person.<br>
+      Like wow. How are you this irritating and this lovable at the same time?
+      Talent, I guess.<br><br>
+
+      I may roast you, but don’t get it twisted — you’re mine, and I adore you
+      more than I’ll ever openly admit.<br>
+
+      So stay exactly the same… just maybe listen to me more sometimes? 😌<br><br>
+
+      <strong>AHAHAHAHAHAHAHH. ❤️</strong>
+    </p>
+
+    <button onclick="closeFinal()" style="
+      margin-top:25px;
+      padding:12px 26px;
+      border:none;
+      border-radius:30px;
+      background:#ffb3c6;
+      cursor:pointer;
+    ">
+      Come here 🥺
+    </button>
+  </div>
+</div>
+
+<div id="miniPopup"></div>
+
+<script>
+// Laptop only
+if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+  mobileBlock.style.display="flex";
+  document.querySelectorAll(".screen").forEach(s=>s.style.display="none");
+}
+
+function go(n){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById("s"+n).classList.add("active");
+}
+
+// Slider
+slider.oninput=()=>{
+  sliderText.innerText = slider.value<10 ? "try again 😌" : "good boy 😏";
+  if(slider.value==10) setTimeout(()=>go(3),600);
+};
+
+// Heart tap
+let taps=0;
+function tap(){
+  taps++;
+  tapText.innerText=`${taps}/3`;
+  if(taps==3) setTimeout(()=>go(4),600);
+}
+
+// Nahi teasing
+const msgs=["try again 😌","uh oh 😏","click first option","nahi manogey?"];
+let mi=0;
+function nope(){
+  miniPopup.innerText=msgs[mi++%msgs.length];
+  miniPopup.style.display="block";
+  setTimeout(()=>miniPopup.style.display="none",1200);
+}
+
+// Maze
+const mazeMap=[
+ "S.....",
+ ".###..",
+ ".#....",
+ ".###..",
+ ".#....",
+ "....E."
+];
+let px=0,py=0;
+const maze=document.getElementById("maze");
+
+mazeMap.forEach((row,y)=>{
+  [...row].forEach((c,x)=>{
+    const d=document.createElement("div");
+    d.className="cell";
+    if(c=="#")d.classList.add("wall");
+    if(c=="S")d.classList.add("start");
+    if(c=="E")d.classList.add("end");
+    d.onclick=()=>{
+      if(Math.abs(px-x)+Math.abs(py-y)==1 && !d.classList.contains("wall")){
+        px=x;py=y;renderMaze();
+        if(c=="E") setTimeout(()=>go(6),600);
+      }
+    };
+    maze.appendChild(d);
+  });
+});
+function renderMaze(){
+  [...maze.children].forEach((c,i)=>{
+    const x=i%6,y=Math.floor(i/6);
+    c.classList.toggle("player",x==px&&y==py);
+  });
+}
+renderMaze();
+
+// NO button
+noBtn.onmouseover=()=>{
+  noBtn.style.left=Math.random()*300+"px";
+  noBtn.style.top=Math.random()*200+"px";
+};
+
+// Final popup chain
+function finale(){
+  lovePopup.style.display="flex";
+}
+function closePopup(){
+  lovePopup.style.display="none";
+  setTimeout(()=>finalScreen.style.display="block",400);
+}
+function closeFinal(){
+  finalScreen.style.display="none";
+}
+
+// Hearts animation
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="❤";
+  h.style.left=Math.random()*100+"vw";
+  h.style.animationDuration=(5+Math.random()*5)+"s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),9000);
+},700);
+</script>
+
+</body>
+</html>
